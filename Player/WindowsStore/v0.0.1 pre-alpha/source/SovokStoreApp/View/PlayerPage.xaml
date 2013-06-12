@@ -1,0 +1,165 @@
+﻿<common:LayoutAwarePage
+    x:Name="pageRoot"
+    x:Class="SovokStoreApp.PlayerPage"
+    DataContext="{Binding App.ViewModel}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SovokStoreApp"
+    xmlns:common="using:SovokStoreApp.Common"
+    xmlns:View="using:SovokStoreApp.View"
+    xmlns:PlayerFramework="using:Microsoft.PlayerFramework"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource
+           x:Name="CList"
+           IsSourceGrouped="true"
+           ItemsPath="Channels"/>
+    </Page.Resources>
+
+    <Page.TopAppBar>
+        <AppBar x:Name="topAppBar" Padding="10,0,10,0" Background="Transparent" BorderBrush="Transparent">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,25,0,0">
+                <TextBlock x:Name="Title" Text="{Binding Active_Channel.name}" FontFamily="Arial Black" FontSize="24" />
+                <TextBlock x:Name="Epg" Text="{Binding Active_Channel.epg_progname}" FontFamily="Arial Black" FontSize="18"/>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
+
+    <Page.BottomAppBar>
+        <AppBar x:Name="bottomAppBar" Padding="10,0,10,0" Background="Transparent" BorderBrush="Transparent">
+            <Grid>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <StackPanel x:Name="MediaControl" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <!--<ToggleButton x:Name="QualityButton" Foreground="White" Content="Quality" Click="ChangeQuality"/>-->
+                        <ToggleButton x:Name="EpgButton" Foreground="White" IsChecked="{Binding IsEpg}" Content="Epg" Style="{StaticResource RssButtonStyle}" Margin="10,0,0,0" Width="40" Height="40" Click="ShowHideEpg"/>
+                        <ToggleButton x:Name="FavoriteButton" IsChecked="{Binding IsFavorite}" Foreground="White" Content="Favorite" Click="FavoriteChannel" Style="{StaticResource FavoriteButtonStyle}" Margin="10,0,0,0" Width="40" Height="40"/>
+                        <Button x:Name="PrevChannelButton" Foreground="White" Content="Prev" Click="PrevChannel" Style="{StaticResource PrevButtonStyle}" Margin="10,0,0,0" Width="50" Height="50"/>
+                        <ToggleButton x:Name="StopPlayButton" IsChecked="{Binding IsPlay}" Foreground="White" Content="Paly" Height="80" Width="80" Click="PlayStopStream" Style="{StaticResource PlayPauseButtonStyle}" Margin="10,0,0,0"/>
+                        <Button x:Name="NextChannelButton" Foreground="White" Content="Next" Click="NextChannel" Style="{StaticResource NextButtonStyle}" Margin="10,0,0,0" Width="50" Height="50"/>
+                        <ToggleButton x:Name="List" Foreground="White" IsChecked="{Binding IsList}" Content="List" Click="ShowHideChannelList" Style="{StaticResource ListButtonStyle}" Margin="10,0,0,0" Width="40" Height="40"/>
+                        <ToggleButton x:Name="Volume" Foreground="White" Content="Volume" Style="{StaticResource VolumeButtonStyle}" Margin="10,0,5,0" Width="36" Height="36" Click="VolumeMuteClick"/>
+                        <Slider Grid.Column="1" x:Name="VolumeSlider" Foreground="#0b4f99" Value="{Binding Volume, ElementName=root, Mode=TwoWay}" Maximum="100" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Style="{StaticResource PositionSlider}" Background="#ABABAB" IsThumbToolTipEnabled="False" Padding="0,0,0,0" Width="77"/>
+                        <TextBlock Text="{Binding Volume}" HorizontalAlignment="Left" FontSize="14" Foreground="Black" Opacity="0.5" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    <Grid x:Name="ProgressControl" >
+                        <TextBlock x:Name="TimePosition" Text="{Binding EpgTimeStart}" Foreground="White" HorizontalAlignment="Left" Width="80" VerticalAlignment="Center" FontSize="18"/>
+                        <ProgressBar x:Name="PositionSlider" Margin="100,0,100,0" VerticalAlignment="Center" Value="{Binding EpgProgress}"/>
+                        <TextBlock x:Name="TimeDuretion" Foreground="White" Text="{Binding EpgTimeEnd}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="80" FontSize="18"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid x:Name="MainGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="340"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <PlayerFramework:MediaPlayer x:Name="medialayer" Grid.ColumnSpan="2" Grid.RowSpan="2" Volume="{Binding Volume}"/>
+            <StackPanel x:Name="SideBar" Background="White" Orientation="Vertical" Grid.Column="1" Grid.RowSpan="2">
+                <StackPanel Orientation="Horizontal" Background="Black">
+                    <Button x:Name="HideListButton" Margin="15" Style="{StaticResource BackButtonStyle}"  Click="HideChannelList" />                
+                    <ComboBox x:Name="ChCategory" Background="#CC000000" FontSize="28" Foreground="White" SelectionChanged="ChangeChannelCategory" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="EpgText" Visibility="Collapsed" Text="Epg" Foreground="White" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <ListView x:Name="ChannelListView" Visibility="Visible" ItemsSource="{Binding Source={StaticResource CList}}"
+			    Background="Transparent" Opacity="0.8" Foreground="Black" SelectionChanged="ChangeActiveChannel" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="70" Height="35">
+                                    <Image Source="{Binding icon}" Stretch="Fill"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <TextBlock Text="{Binding name}" Style="{StaticResource CaptionTextStyle}" Foreground="Black" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding epg_progname}" Style="{StaticResource CaptionTextStyle}" Foreground="Black" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="7,7,0,0">
+                                        <Button Style="{StaticResource TextPrimaryButtonStyle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding GroupName}" Margin="3,-7,10,10" Style="{StaticResource GroupHeaderTextStyle}" Foreground="Black" />
+                                                <TextBlock Text="&#xE26B;" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource GroupHeaderTextStyle}" Foreground="Black"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+                <ListView x:Name="ChannelEpgView" Visibility="Collapsed" Background="Transparent" Opacity="0.8" Foreground="Black">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="6">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding t_start}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding progname}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Foreground="Black" Width="200" Margin="20,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Grid>
+        
+        <View:SnapViewControl x:Name="snapViewControl" Grid.ColumnSpan="2" Grid.RowSpan="2" Visibility="Collapsed" />
+
+        <VisualStateManager.VisualStateGroups>
+
+            <!-- Visual states reflect the application's view state -->
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled"/>
+
+                <!-- The entire page respects the narrower 100-pixel margin convention for portrait -->
+                <VisualState x:Name="FullScreenPortrait">
+
+                </VisualState>
+
+                <!-- The back button and title have different styles when snapped -->
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="snapViewControl" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="topAppBar" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="bottomAppBar" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+    </Grid>
+</common:LayoutAwarePage>
