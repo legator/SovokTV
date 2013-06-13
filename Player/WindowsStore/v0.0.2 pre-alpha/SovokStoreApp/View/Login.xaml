@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="SovokStoreApp.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SovokStoreApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource MainBackgroundBrush}">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+            <Image Source="ms-appx:///Assets/SplashScreen.png" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300"/>
+            <TextBlock Text="Let`s get started" Foreground="Black" FontSize="24" FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0"/>
+            <StackPanel Orientation="Vertical" Visibility="Visible" x:Name="LoginPanel" Height="205">
+                <TextBlock Text="Username:" Foreground="Black" FontSize="22" FontFamily="Times New Roman" Margin="0,5,0,0"/>
+                <TextBox x:Name="LoginBox" x:Uid="login" BorderBrush="Black" Margin="0,5,0,0"/>
+                <TextBlock Text="Password:" Foreground="Black" FontSize="22" FontFamily="Times New Roman" Margin="0,5,0,0"/>
+                <PasswordBox x:Name="PassBox" BorderBrush="Black" IsPasswordRevealButtonEnabled="True" Margin="0,5,0,0"/>
+                <TextBlock Text="Protect code:" Foreground="Black" FontSize="22" FontFamily="Times New Roman" Margin="0,5,0,0"/>
+                <PasswordBox x:Name="CodeBox" BorderBrush="Black" IsPasswordRevealButtonEnabled="True" Margin="0,5,0,0"/>
+            </StackPanel>
+            <Grid x:Name="WaitPanel" Visibility="Collapsed" Height="205">
+                <ProgressRing x:Name="WaitToLogin" IsActive="True" Height="50" Width="50"/>
+                <TextBlock Text="Wait..." FontSize="22" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            </Grid>
+            <StackPanel x:Name="ActionButton" Orientation="Horizontal" HorizontalAlignment="Right" Height="40" Margin="0,5,0,0">
+                <Button x:Name="LoginButton" Content="Login" Foreground="Black" Click="Login_click" Background="White" BorderBrush="Black" Style="{StaticResource LightButtonStyle}" Margin="0,1,0,0" Height="39"/>
+                <Button x:Name="CancelButton" Content="Cancel" Foreground="Black" Background="White" BorderBrush="Black"  Margin="10,0,0,0" Style="{StaticResource LightButtonStyle}"/>
+            </StackPanel>
+            <StackPanel x:Name="collapsedActionButton" Visibility="Collapsed" Height="40" Margin="0,5,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Button x:Name="SovokButton" Content="Sovok.tv" Foreground="Black" Background="White" BorderBrush="Black" Click="GoToSovokSite" Style="{StaticResource SovokButtonStyle}" Height="48" Width="48"/>
+                <Button x:Name="GitHubButton" Content="GitHub" Foreground="Black" Background="White" BorderBrush="Black" Click="GoToGitHub" Style="{StaticResource GitHubButtonStyle}" Margin="10,0,0,0" Height="48" Width="48"/>
+                <Button x:Name="TwitterButton" Content="Twitter" Foreground="Black" Background="White" BorderBrush="Black" Click="GoToTwitter" Style="{StaticResource TwitterButtonStyle}" Margin="10,0,0,0" Height="48" Width="48"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
