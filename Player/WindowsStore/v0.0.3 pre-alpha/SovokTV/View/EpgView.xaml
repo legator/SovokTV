@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="SovokTV.EpgView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SovokTV"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <StackPanel Background="White" Orientation="Vertical">
+            <StackPanel Background="Black" VerticalAlignment="Top"  RenderTransformOrigin="0.5,0.5" Orientation="Horizontal">
+                <Button Margin="15" Style="{StaticResource BackButtonStyle}" Click="HideSettings"/>
+                <TextBlock x:Name="EpgText" Text="Epg" Foreground="White" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+            <ListView x:Name="ChannelEpgView" Margin="15" Background="Transparent" Opacity="0.8" Foreground="Black" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="6">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding t_start}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding progname}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Foreground="Black" Width="200" Margin="20,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</UserControl>
