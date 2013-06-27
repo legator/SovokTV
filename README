@@ -1,1 +1,7 @@
-C# REST API & player(winform/wpf/windows 8 store) based on vlc for sovok.tv
+C# REST API & player(winform/wpf/windows store) for sovok.tv service
+
+Run win8 app without submitting to store:
+add-appxpackage C:\app.appx
+Remove app from process:
+remove-appxpackage C:\app.appx
+More information - http://technet.microsoft.com/en-us/library/hh856048.aspx
