@@ -1,0 +1,390 @@
+﻿<Controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        x:Class="SovokTV.MainWindow"
+        Title="SovokTV player by legAToR" Height="400" Width="700"
+        ShowIconOnTitleBar="True" Icon="favicon.ico" Closing="MetroWindow_Closing" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="Resources/Icons.xaml" />
+                <ResourceDictionary Source="Resources/ChannelList.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+
+    <Controls:MetroWindow.WindowCommands>
+        <Controls:WindowCommands>
+            <Button x:Name="programtv_button" Click="progtv_open_tab">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="15" Height="15">
+                        <Rectangle.Resources>
+                            <SolidColorBrush x:Key="BlackBrush" Color="White" />
+                        </Rectangle.Resources>
+                        <Rectangle.Fill>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_tv}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Text=" TV Program" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="account_button" Click="account_open_tab">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="15" Height="15">
+                        <Rectangle.Resources>
+                            <SolidColorBrush x:Key="BlackBrush" Color="White" />
+                        </Rectangle.Resources>
+                        <Rectangle.Fill>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_settings}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Text=" Account" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="author_button" Click="author_open_tab">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="15" Height="15">
+                        <Rectangle.Resources>
+                            <SolidColorBrush x:Key="BlackBrush" Color="White" />
+                        </Rectangle.Resources>
+                        <Rectangle.Fill>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_user}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Text=" Author" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.WindowCommands>
+
+    <Grid x:Name="maingrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="300" />
+            <ColumnDefinition MinWidth="300" />
+        </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Column="0" HorizontalAlignment="Right" Width="5"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="300"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <WindowsFormsHost x:Name="WinFormsHost"
+                          Grid.Row="0"/>
+            <Button x:Name="stop_live_button"  Style="{DynamicResource MetroCircleButtonStyle}"
+        					HorizontalAlignment="Center" Width="36" Height="36" VerticalAlignment="Top" Margin="254,10,10,0" Grid.Row="1" Click="stop_stream">
+                <Rectangle Width="12"
+        						Height="12">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_control_stop}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button x:Name="play_live_button"  Style="{DynamicResource MetroCircleButtonStyle}"
+        					HorizontalAlignment="Center" Width="36" Height="36" VerticalAlignment="Top" Margin="218,10,46,0" Grid.Row="1" Click="pay_stream">
+                <Rectangle Width="15"
+        						Height="15">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_control_play_live}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button x:Name="dec_vol_button"  Style="{DynamicResource MetroCircleButtonStyle}"
+        					HorizontalAlignment="Center" Width="36" Height="36" VerticalAlignment="Top" Margin="10,10,254,0" Grid.Row="1" Click="dec_vol_action">
+                <Rectangle Width="13"
+        						Height="13">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_sound_0}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button x:Name="inc_vol_button" Style="{DynamicResource MetroCircleButtonStyle}"
+        					HorizontalAlignment="Center" Width="36" Height="36" VerticalAlignment="Top" Margin="146,10,118,0" Grid.Row="1" Click="inc_vol_action">
+                <Rectangle Width="13"
+        						Height="13">
+                    <Rectangle.Fill>
+                        <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_sound_3}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Button>
+            <Button x:Name="ratio_button" Style="{DynamicResource MetroCircleButtonStyle}"
+        					HorizontalAlignment="Center" Width="36" Height="36" VerticalAlignment="Top" Margin="182,10,82,0" Grid.Row="1" Click="change_ration">
+                <TextBlock x:Name="but_rat"  Text="16:9"/>
+            </Button>
+            <Slider x:Name="vol_slider" Margin="51,22,159,10" Grid.Row="1" HorizontalAlignment="Center" Width="90" Value="50" ValueChanged="vol_slider_change"/>
+        </Grid>
+        <TabControl>
+            <TabItem x:Name="chlist_tab"  Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <ComboBox x:Name="CategoryComboBox" SelectionChanged="UpdateCategory" Height="26" VerticalAlignment="Top" Margin="0,10,0,10"/>
+                    <ListBox x:Name="ChList"
+                        ItemsSource="{Binding}" 
+                        ItemTemplate="{StaticResource DataTemp}" 
+                        HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.CanContentScroll="False"
+                        IsSynchronizedWithCurrentItem="True" SelectionChanged="ListBox_SelectionChanged" Margin="0,48,0,0">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Favorite" Click="Ch_fav_Click"/>
+                                <MenuItem Header="Settings" Click="Ch_set_Click"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tvprog_tab" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}"
+        					Click="BackToList" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top">
+                        <Rectangle Width="14"
+        						Height="14">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_arrow_left}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <ListView x:Name="epg_list" 
+                              ItemsSource="{Binding}" ItemContainerStyle="{StaticResource alternateColor}"
+                              Margin="0,41,0,0" SelectionMode="Multiple">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="50" Header="Time" DisplayMemberBinding="{Binding epg_time}" />
+                                <GridViewColumn Width="280" Header="Description" DisplayMemberBinding="{Binding epg_program}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="settings_tab" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}"
+        					Click="BackToList" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top">
+                        <Rectangle Width="14"
+        						Height="14">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_arrow_left}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <Button Content="Clear" HorizontalAlignment="Center" Margin="122,142,88,0" VerticalAlignment="Top" Width="72" Click="clear_set_click"/>
+                    <Button Content="Save" HorizontalAlignment="Center" Margin="199,142,10,0" VerticalAlignment="Top" Width="73" Click="save_set_click"/>
+                    <ComboBox x:Name="ch_ratio"  HorizontalAlignment="Center" Margin="122,40,32,0" VerticalAlignment="Top" Width="128">
+                        <ComboBoxItem Content="16:9"/>
+                        <ComboBoxItem Content="3:4"/>
+                    </ComboBox>
+                    <ComboBox x:Name="ch_dein"  HorizontalAlignment="Center" Margin="122,71,32,0" VerticalAlignment="Top" Width="128">
+                        <ComboBoxItem Content="0"/>
+                        <ComboBoxItem Content="blend"/>
+                        <ComboBoxItem Content="discard"/>
+                        <ComboBoxItem Content="bob"/>
+                        <ComboBoxItem Content="linear"/>
+                        <ComboBoxItem Content="mean"/>
+                        <ComboBoxItem Content="x"/>
+                        <ComboBoxItem Content="yadif"/>
+                        <ComboBoxItem Content="yadif2x"/>
+                    </ComboBox>
+                    <TextBlock HorizontalAlignment="Center" Margin="34,50,216,0" TextWrapping="Wrap" Text="Ration" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="33,81,199,0" TextWrapping="Wrap" Text="Deinterlace" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Center" Margin="34,112,219,0" TextWrapping="Wrap" Text="Buffer" VerticalAlignment="Top"/>
+                    <TextBox x:Name="ch_buffer"  HorizontalAlignment="Center" Height="23" Margin="121,102,32,0"
+                             VerticalAlignment="Top" Width="129"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="account_tab" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}"
+        					Click="BackToList" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top">
+                        <Rectangle Width="14"
+        						Height="14">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_arrow_left}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <TabControl Margin="0,41,0,0">
+                        <TabItem Header="Login">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="78*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                    <ColumnDefinition Width="172*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock HorizontalAlignment="Center" Margin="10,12,33,10" TextWrapping="Wrap" Text="UserName"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="10,12,36,10" Grid.Row="1" TextWrapping="Wrap" Text="PassWord"/>
+                                <TextBox x:Name="account_user" Grid.Column="1" HorizontalAlignment="Center"
+                                         Controls:TextboxHelper.Watermark="Enter your user name" Controls:TextboxHelper.ClearTextButton="True"
+                                         Height="16" Margin="15,10,6,2" Width="152"/>
+                                <TextBox x:Name="account_pass" Grid.Column="1" HorizontalAlignment="Center" 
+                                         Controls:TextboxHelper.Watermark="Enter your pass" Controls:TextboxHelper.ClearTextButton="True"
+                                         Height="23" Margin="15,6,6,6" Grid.Row="1" Width="152"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="10,10,20,12" Grid.Row="2" TextWrapping="Wrap" Text="Protect Code"/>
+                                <TextBox x:Name="account_code" Grid.Column="1" HorizontalAlignment="Center" 
+                                         Controls:TextboxHelper.Watermark="Enter your protect code" Controls:TextboxHelper.ClearTextButton="True"
+                                         Height="23" Margin="15,8,6,4" Grid.Row="2" Width="152"/>
+                                <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Center" Margin="10,10,87,4" Grid.Row="3" Width="73" Click="clear_click"/>
+                                <Button Content="Save"  Grid.Column="1" HorizontalAlignment="Center" Margin="95,10,5,4" Grid.Row="3" Width="73" Click="save_click"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Account">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="70*"/>
+                                    <RowDefinition Height="30*"/>
+                                    <RowDefinition Height="30*"/>
+                                    <RowDefinition Height="30*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="43*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Center" Margin="10,10,90,0" Grid.Row="5" VerticalAlignment="Top" Width="72" Click="clear_acc_click"/>
+                                <Button Content="Save"  Grid.Column="1" HorizontalAlignment="Center" Margin="96,10,10,0" Grid.Row="5" VerticalAlignment="Top" Width="72" Click="save_acc_click"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="12,5,38,0" TextWrapping="Wrap" Text="UserName" VerticalAlignment="Top" Grid.RowSpan="2"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="12,5,3,0" Grid.Row="1" TextWrapping="Wrap" Text="Balance" VerticalAlignment="Top" Width="85"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="12,10,22,0" Grid.Row="3" TextWrapping="Wrap" Text="Time zone" VerticalAlignment="Top" Width="66"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="12,10,40,0" Grid.Row="4" TextWrapping="Wrap" Text="Streamer" VerticalAlignment="Top"/>
+                                <ComboBox x:Name="account_zone"  Grid.Column="1" HorizontalAlignment="Center" Margin="14,5,16,0" Grid.Row="3" VerticalAlignment="Top" Width="142">
+                                    <ComboBoxItem Content="+05:00:00"/>
+                                    <ComboBoxItem Content="+04:00:00"/>
+                                    <ComboBoxItem Content="+03:00:00"/>
+                                    <ComboBoxItem Content="+02:00:00"/>
+                                    <ComboBoxItem Content="+01:00:00"/>
+                                    <ComboBoxItem Content="+00:00:00"/>
+                                    <ComboBoxItem Content="-01:00:00"/>
+                                    <ComboBoxItem Content="-02:00:00"/>
+                                    <ComboBoxItem Content="-03:00:00"/>
+                                    <ComboBoxItem Content="-04:00:00"/>
+                                    <ComboBoxItem Content="-05:00:00"/>
+                                </ComboBox>
+                                <ComboBox x:Name="account_streamer"  Grid.Column="1" HorizontalAlignment="Center" Margin="14,5,16,0" Grid.Row="4" VerticalAlignment="Top" Width="142">
+                                    <ComboBoxItem Content="4"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="1"/>
+                                </ComboBox>
+                                <TextBlock Grid.Column="1" x:Name="acc_name"  HorizontalAlignment="Center" Margin="20,5,17,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.RowSpan="2" Width="138"/>
+                                <TextBlock Grid.Column="1" x:Name="acc_balance"  HorizontalAlignment="Center" Margin="17,5,17,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="141"/>
+                                <ListView x:Name="packagelist" 
+                                          ItemsSource="{Binding}" ItemContainerStyle="{StaticResource alternateColor}"
+                                          Margin="20,5,33,5" SelectionMode="Multiple" Grid.Row="2" Grid.ColumnSpan="2">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="130" Header="Name" DisplayMemberBinding="{Binding package_name}" />
+                                            <GridViewColumn Width="130" Header="Expire" DisplayMemberBinding="{Binding package_expire}" />
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Pin">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="40*"/>
+                                    <RowDefinition Height="131*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="43*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock HorizontalAlignment="Center" Margin="10,14,36,0" TextWrapping="Wrap" Text="Pin1" VerticalAlignment="Top"/>
+                                <TextBlock HorizontalAlignment="Center" Margin="10,14,37,0" Grid.Row="1" TextWrapping="Wrap" Text="Pin2" VerticalAlignment="Top"/>
+                                <TextBox x:Name="account_pin1"  Grid.Column="1" HorizontalAlignment="Center" Height="23" Margin="9,10,10,0" 
+                                         Controls:TextboxHelper.Watermark="Enter your pin1" Controls:TextboxHelper.ClearTextButton="True"
+                                         VerticalAlignment="Top" Width="156"/>
+                                <TextBox x:Name="account_pin2"  Grid.Column="1" HorizontalAlignment="Center" Height="23" Margin="9,10,10,0" Grid.Row="1"
+                                         Controls:TextboxHelper.Watermark="Enter your pin2" Controls:TextboxHelper.ClearTextButton="True"
+                                         VerticalAlignment="Top" Width="156"/>
+                                <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Center" Margin="9,10,91,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="clear_pin_click"/>
+                                <Button Content="Save" Grid.Column="1" HorizontalAlignment="Center" Margin="90,10,10,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="save_pin_click"/>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="author_tab" Margin="0,0,0,0">
+                <Grid Margin="0,0,0,0">
+                    <Button Style="{DynamicResource MetroCircleButtonStyle}"
+        					Click="BackToList" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                        <Rectangle Width="14"
+        						Height="14">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+        								Visual="{StaticResource appbar_arrow_left}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Left" Margin="25,50,0,0" TextWrapping="Wrap" Text="Author" VerticalAlignment="Top" Height="16" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="25,111,0,0" TextWrapping="Wrap" Text="Contact" VerticalAlignment="Top" Height="16" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="100,75,0,0" TextWrapping="Wrap" x:Name="player_version"  Text="" VerticalAlignment="Top" Height="16" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="25,75,0,0" TextWrapping="Wrap" Text="Version" VerticalAlignment="Top" Height="16" Width="50"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="100,50,0,0" TextWrapping="Wrap" Text="legAToR" VerticalAlignment="Top" Height="16" Width="50"/>
+                    <Button x:Name="opentwitter"  Style="{DynamicResource MetroCircleButtonStyle}"
+                    	Click="open_twitter" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top" Margin="100,100,0,0">
+                        <Rectangle Width="14"
+                    		Height="14">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+                    				Visual="{StaticResource appbar_twitter_bird}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <Button x:Name="opengithub"  Style="{DynamicResource MetroCircleButtonStyle}"
+                    	Click="open_github" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top" Margin="136,100,0,0">
+                        <Rectangle Width="16"
+                    		Height="16">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+                    				Visual="{StaticResource appbar_github}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <Button x:Name="opencontrols"  Style="{DynamicResource MetroCircleButtonStyle}"
+                    	Click="open_controls" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top" Margin="172,100,0,0">
+                        <Rectangle Width="16"
+                    		Height="16">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+                    				Visual="{StaticResource appbar_copyright}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <Button x:Name="opensovoktv"  Style="{DynamicResource MetroCircleButtonStyle}"
+                    	Click="open_sovoktv" HorizontalAlignment="Left" Width="36" Height="36" VerticalAlignment="Top" Margin="208,100,0,0">
+                        <Rectangle Width="15"
+                    		Height="15">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+                    				Visual="{StaticResource appbar_tv}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Left" Margin="25,142,0,0" TextWrapping="Wrap" Text="Thanks to:" VerticalAlignment="Top" Height="16" Width="62"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="100,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Width="154"><Run Text="MahApps controls"/><LineBreak/><Run Text="Modern UI Icons"/></TextBlock>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>
